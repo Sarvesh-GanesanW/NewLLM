@@ -7,5 +7,8 @@ Append each and every message to S3.
 Left pane:
     Older chats that are mapped to Postgres which inturn gets the data from S3. (S3 URL)
     conversation name - If the user gives a name, then okay. If not, keep it as new chat and add it as the name for the conversation.
-    
+New chat
+User ID from lambda. Make the user ID a static variable and pass it on. 
+Conversation ID is the same as User ID. Line 12
+conversation name - If the user gives a name, then okay. If not, keep it as new chat and add it as the name for the conversation. (lambda)
 
