@@ -1,0 +1,11 @@
+Need to add a class to fetch the messages inside the memory.
+Need a function to clear the memory.
+Conversation ID
+User ID
+Greeting message will be coming from the front-end
+Append each and every message to S3.
+Left pane:
+    Older chats that are mapped to Postgres which inturn gets the data from S3. (S3 URL)
+    conversation name - If the user gives a name, then okay. If not, keep it as new chat and add it as the name for the conversation.
+    
+
