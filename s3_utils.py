@@ -1,10 +1,16 @@
 import boto3
+import json
+import datetime
 
-def upload_to_s3(bucket_name, object_name, conversation_data):
+def generate_filename(conversation_memory):
+    return f"conversation_{conversation_memory.conversation_id}.json"
+
+def upload_conversation_to_s3(conversation_memory, bucket_name):
     s3_client = boto3.client('s3')
+    filename = generate_filename(conversation_memory)
+    json_data = conversation_memory.to_json()
     try:
-        s3_client.put_object(Body=conversation_data, Bucket=bucket_name, Key=object_name)
-        return True
+        s3_client.put_object(Bucket=bucket_name, Key=filename, Body=json_data)
+        print(f"Conversation uploaded to S3 with filename: {filename}")
     except Exception as e:
-        print(f"Error uploading to S3: {e}")
-        return False
+        print(f"An error occurred: {e}")
