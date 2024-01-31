@@ -78,9 +78,8 @@ while True:
     print(response)
     conversation_memory.update_memory('AI', response)
 
-    # Check if the conversation has reached a natural end
     if check_conversation_end(response):
-        bucket_name = 'genailogs1'  # Replace with your S3 bucket name
+        bucket_name = 'genailogs1'  
         object_name = f'conversation_logs/conversation_{datetime.datetime.now().isoformat()}.json'
         conversation_json = conversation_memory.to_json()
         if upload_to_s3(bucket_name, object_name, conversation_json):
