@@ -20,7 +20,7 @@ class ConversationMemory:
     memory usage.
     """
     def estimate_tokens(self, text):
-        return len(text.split())
+        return max(1, len(text) // 4)
 
     """Updates the conversation memory with a new message.
     

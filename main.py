@@ -160,15 +160,17 @@ def new_chat():
     # Reset the conversation memory which will also generate a new conversation_id
     return jsonify({'message': 'Conversation reset. Ready for new chat.'})
 
-
-# if __name__ == '__main__':
-#     reset_conversation_memory()
-#     create_conversations_table()
-#     app.run(debug=True, port=5001)
-
 import socket
 from contextlib import closing
 
+"""Checks if a given port is available for use.
+
+Args:
+    port: The port number to check.
+
+Returns: 
+    True if the port is available, False otherwise.
+"""
 def check_port(port):
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
         if sock.connect_ex(('localhost', port)) == 0:
