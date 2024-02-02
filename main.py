@@ -173,7 +173,7 @@ Returns:
 """
 def check_port(port):
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
-        if sock.connect_ex(('localhost', port)) == 0:
+        if sock.connect_ex(('0.0.0.0', port)) == 0:
             return False
         else:
             return True
