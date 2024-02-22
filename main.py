@@ -72,7 +72,7 @@ a response, and returns the response.
 def get_response(user_input):
     conversation_memory.update_memory(conversation_id, user_id, 'Human', user_input)
     current_context = conversation_memory.get_current_context()
-    prompt = f"{current_context}\n\nAssistant:"
+    prompt = f"Human: If the current context contains a question related to any procedure related to databases, Greet the user and request the user for a connection name. After you get the connection name, enclose the connection name with double quotes, and use that name as the connection string in the generated response. For connecting to databases, instead of detailing parameters like dbname, user, host, and password, simply specify connection the connection name inside it.\n\n{current_context}\n\nAssistant:"
     response = interact_with_bedrock(prompt)
     return response
 

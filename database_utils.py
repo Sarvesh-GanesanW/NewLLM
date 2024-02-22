@@ -31,7 +31,8 @@ def create_conversations_table():
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS conversations (
-            conversation_id UUID PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
+            conversation_id UUID NOT NULL,
             user_id UUID NOT NULL,
             conversation_name VARCHAR(255) DEFAULT 'New Chat',
             s3_file_location TEXT NOT NULL
@@ -40,6 +41,7 @@ def create_conversations_table():
     conn.commit()
     cur.close()
     conn.close()
+
 
 """Inserts a new conversation metadata record into the conversations table.
 
