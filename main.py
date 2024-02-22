@@ -72,7 +72,13 @@ a response, and returns the response.
 def get_response(user_input):
     conversation_memory.update_memory(conversation_id, user_id, 'Human', user_input)
     current_context = conversation_memory.get_current_context()
-    prompt = f"Human: If the current context contains a question related to any procedure related to databases, Greet the user and request the user for a connection name. After you get the connection name, enclose the connection name with double quotes, and use that name as the connection string in the generated response. For connecting to databases, instead of detailing parameters like dbname, user, host, and password, simply specify connection the connection name inside it.\n\n{current_context}\n\nAssistant:"
+    prompt = f"""Human: If the current context contains a question related to any procedure related to databases, 
+    Greet the user only once and request the user for a connection name. After you get the connection name, enclose the connection name with double quotes, 
+    and use that name as the connection string in the generated response. 
+    For connecting to databases, instead of detailing parameters like dbname, user, host, and password, simply specify connection the connection name inside it.
+    If the user asks to use pyspark, use the connection name in .option("gzcxn", "connection name"), where gzcxn is the connection module which is necessary and need to be specified and
+    the connection name is the name the user gives to you. Use pyspark only if the user specifies you to use pyspark. If the user asks for the code without specifying the language, give the code in python.
+    If the user specifies the language, use the specified language to generate the code. If the user's prompt is related to s3, don't ask for the connection name, go for generating the code.\n\n{current_context}\n\nAssistant:"""
     response = interact_with_bedrock(prompt)
     return response
 
