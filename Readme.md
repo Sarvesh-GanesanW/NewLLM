@@ -12,9 +12,9 @@ The ConversationMemory class in conversation_memory.py handles tracking state fo
 
 Key methods:
 
-update_memory(): Adds a new message to the memory log
-get_current_context(): Gets the recent context for the conversation
-to_json(): Serializes the memory log to JSON
+update_memory(): Adds a new message to the memory log.
+get_current_context(): Gets the recent context for the conversation.
+to_json(): Serializes the memory log to JSON.
 The main.py initializes a ConversationMemory instance to track state for each unique conversation.
 
 Conversation Storage
