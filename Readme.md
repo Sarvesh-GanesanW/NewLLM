@@ -51,7 +51,7 @@ Integration with Claude AI is handled in `main.py`, managing the sending of prom
 
 ### Requirements
 
-- Claude API key
+- AWS Bedrock Access
 - AWS S3 bucket
 - PostgreSQL database
 
