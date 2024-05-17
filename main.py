@@ -45,7 +45,7 @@ def interact_with_bedrock(formatted_prompt):
     body = json.dumps({
         'prompt': formatted_prompt,
         'max_tokens_to_sample': 4096,
-        'temperature': 0.5,
+        'temperature': 0.7,
         'top_p': 0.9,
         'top_k': 300,
         'stop_sequences': ["\n\nHuman:"]
@@ -72,13 +72,22 @@ a response, and returns the response.
 def get_response(user_input):
     conversation_memory.update_memory(conversation_id, user_id, 'Human', user_input)
     current_context = conversation_memory.get_current_context()
-    prompt = f"""Human: If the current context contains a question related to any procedure related to databases, 
-    Greet the user only once and request the user for a connection name. After you get the connection name, enclose the connection name with double quotes, 
-    and use that name as the connection string in the generated response. 
-    For connecting to databases, instead of detailing parameters like dbname, user, host, and password, simply specify connection the connection name inside it.
-    If the user asks to use pyspark, use the connection name in .option("gzcxn", "connection name"), where gzcxn is the connection module which is necessary and need to be specified and
-    the connection name is the name the user gives to you. Use pyspark only if the user specifies you to use pyspark. If the user asks for the code without specifying the language, give the code in python.
-    If the user specifies the language, use the specified language to generate the code. If the user's prompt is related to s3, don't ask for the connection name, go for generating the code.\n\n{current_context}\n\nAssistant:"""
+    
+    prompt = f"""Human:
+    You are an AI assistant. The following is the current context and memory of the conversation:
+
+    Context: {current_context}
+
+    Respond to the user's statements or questions directly and appropriately. Always provide a meaningful response, even if the user's statement is not a direct question. Your response should be helpful, engaging, and relevant to the user's input. Do not state that you checked your memory. Just provide a direct and useful response.
+
+    Example:
+    - User says "I like apples." -> You might respond, "Apples are a great choice! Do you have a favorite variety?"
+
+    Now, based on the current context and memory, respond to the user's input:
+
+    Human: {user_input}
+    Assistant:"""
+    
     response = interact_with_bedrock(prompt)
     return response
 

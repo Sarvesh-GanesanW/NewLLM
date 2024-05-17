@@ -1,8 +1,8 @@
 To test the /chat route, run the command:
-    curl -X POST -H "Content-Type: application/json" -d '{"user_input": "Hello", "conversation_name": "My Chat"}' http://localhost:5000/chat
+    curl -X POST -H "Content-Type: application/json" -d '{"user_input": "Hello, my name is Sarvesh", "conversation_name": "My Chat"}' http://localhost:5000/chat
 
 To test the /new_chat route, run the command:
     curl -X POST http://localhost:5000/new_chat -H "Content-Type: application/json" -d '{}'
 
 To test the /get_conversation route, run the command:
-    curl -X POST "http://localhost:5001/get_conversation?conversation_id=4fc20c47-8e46-408c-8964-706595557655"
+    curl -X POST "http://localhost:5000/get_conversation?conversation_id=8f9ae04d-83e1-438f-b4a2-f47baf426371"
