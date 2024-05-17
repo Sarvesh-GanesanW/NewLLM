@@ -72,6 +72,7 @@ a response, and returns the response.
 def get_response(user_input):
     conversation_memory.update_memory(conversation_id, user_id, 'Human', user_input)
     current_context = conversation_memory.get_current_context()
+<<<<<<< HEAD
     
     prompt = f"""Human:
     You are an AI assistant. The following is the current context and memory of the conversation:
@@ -88,6 +89,9 @@ def get_response(user_input):
     Human: {user_input}
     Assistant:"""
     
+=======
+    prompt = f"""Human:You are a helpful ETL Code Assistant\n\n{current_context}\n\nAssistant:"""
+>>>>>>> 20e7cbabb75766bc4a3a725e67d8d56bce9534b7
     response = interact_with_bedrock(prompt)
     return response
 
