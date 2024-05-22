@@ -29,18 +29,18 @@ class ConversationMemory:
     memory capacity by removing old entries when max tokens 
     is reached.
     """
-    def update_memory(self, conversation_id, user_id, speaker, message):
+    def update_memory(self, conversation_id, user_id, speaker, message, input_token):
         timestamp = datetime.datetime.now().isoformat()
         entry = {
             'conversation_id': conversation_id,
             'user_id': user_id,
             'timestamp': timestamp, 
             'speaker': speaker, 
-            'message': message
+            'message': message,
+            'input_token_count': input_token
         }
         self.memory.append(entry)
-        new_line_tokens = self.estimate_tokens(message)
-        self.current_token_count += new_line_tokens
+        self.current_token_count += input_token
 
         while self.current_token_count > self.max_tokens:
             removed_entry = self.memory.pop(0)
