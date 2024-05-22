@@ -17,14 +17,15 @@ try:
 except Exception as e:
     print(f"Error initializing Bedrock client: {e}")
 
-"""Resets the conversation memory by generating new UUIDs for the 
-conversation_id and user_id, and initializing a new ConversationMemory 
-object.
 
-This allows the conversation state to be reset, while preserving the 
-existing ConversationMemory class.
-"""
 def reset_conversation_memory():
+    """Resets the conversation memory by generating new UUIDs for the 
+    conversation_id and user_id, and initializing a new ConversationMemory 
+    object.
+
+    This allows the conversation state to be reset, while preserving the 
+    existing ConversationMemory class.
+    """
     global conversation_memory, conversation_id, user_id
     # Generate new UUIDs for the conversation and user
     conversation_id = str(uuid.uuid4())
@@ -33,15 +34,16 @@ def reset_conversation_memory():
     conversation_memory = ConversationMemory()
     conversation_memory.conversation_id = conversation_id
 
-"""
-interact_with_bedrock sends a prompt to the Bedrock runtime API and returns the text response.
 
-It takes in a formatted prompt string, calls the Bedrock runtime invoke_model API with the prompt and various sampling parameters, 
-and returns the text response from Bedrock.
-
-Handles errors from the Bedrock API invocation and returns an error message string on failure.
-"""
 def interact_with_bedrock(formatted_prompt):
+    """
+    interact_with_bedrock sends a prompt to the Bedrock runtime API and returns the text response.
+
+    It takes in a formatted prompt string, calls the Bedrock runtime invoke_model API with the prompt and various sampling parameters, 
+    and returns the text response from Bedrock.
+
+    Handles errors from the Bedrock API invocation and returns an error message string on failure.
+    """
     body = json.dumps({
         'prompt': formatted_prompt,
         'max_tokens_to_sample': 4096,
@@ -64,12 +66,13 @@ def interact_with_bedrock(formatted_prompt):
         return f"An error occurred: {e}"
 
 
-"""Updates the conversation memory with the user input, retrieves the current 
-context from the memory, formats a prompt using the context and a placeholder 
-for the assistant's response, interacts with the Bedrock AI model to generate 
-a response, and returns the response.
-"""
+
 def get_response(user_input):
+    """Updates the conversation memory with the user input, retrieves the current 
+    context from the memory, formats a prompt using the context and a placeholder 
+    for the assistant's response, interacts with the Bedrock AI model to generate 
+    a response, and returns the response.
+    """
     conversation_memory.update_memory(conversation_id, user_id, 'Human', user_input)
     current_context = conversation_memory.get_current_context()
     
@@ -93,17 +96,18 @@ def get_response(user_input):
 
 app = Flask(__name__)
 
-"""
-chat endpoint that handles a user chat input.
 
-- Gets the user input from the request
-- Calls get_response() to generate the AI response
-- Updates the conversation memory with the user input and AI response
-- Saves the entire conversation to S3 after every user interaction
-- Returns the AI response
-"""
 @app.route('/chat', methods=['POST'])
 def chat():
+    """
+    chat endpoint that handles a user chat input.
+
+    - Gets the user input from the request
+    - Calls get_response() to generate the AI response
+    - Updates the conversation memory with the user input and AI response
+    - Saves the entire conversation to S3 after every user interaction
+    - Returns the AI response
+    """
     global conversation_memory, conversation_id, user_id
     user_input = request.json['user_input']
     response = get_response(user_input)
@@ -121,20 +125,21 @@ def chat():
     return jsonify({'response': response})
 
 
-"""
-Retrieves a conversation from S3 based on the conversation ID, 
-and returns the chat messages from the conversation.
 
-Looks up the metadata for the conversation ID to get the S3 file location. 
-Gets the file contents from S3, parses the JSON, and returns the chat messages array.
-
-Returns:
-    200 with chat messages array on success
-    404 if no conversation found for ID
-    500 on error retrieving from S3 or invalid file format
-"""
 @app.route('/get_conversation', methods=['POST'])
 def get_conversation():
+    """
+    Retrieves a conversation from S3 based on the conversation ID, 
+    and returns the chat messages from the conversation.
+
+    Looks up the metadata for the conversation ID to get the S3 file location. 
+    Gets the file contents from S3, parses the JSON, and returns the chat messages array.
+
+    Returns:
+        200 with chat messages array on success
+        404 if no conversation found for ID
+        500 on error retrieving from S3 or invalid file format
+    """
     conversation_id = request.args.get('conversation_id')
     
     metadata = get_conversation_metadata(conversation_id)
@@ -155,11 +160,13 @@ def get_conversation():
     
     return jsonify({'chat_messages': chat_messages})
 
-"""Saves the current conversation to S3 before resetting the 
-conversation memory and returning a response indicating the 
-conversation has been reset and is ready for a new chat."""
+
 @app.route('/new_chat', methods=['POST'])
 def new_chat():
+    """Saves the current conversation to S3 before resetting the 
+    conversation memory and returning a response indicating the 
+    conversation has been reset and is ready for a new chat.
+    """
     global conversation_memory, conversation_id, user_id
     conversation_name = request.json.get('conversation_name', 'New Chat')
     reset_conversation_memory()
@@ -178,15 +185,16 @@ def new_chat():
 import socket
 from contextlib import closing
 
-"""Checks if a given port is available for use.
 
-Args:
-    port: The port number to check.
-
-Returns: 
-    True if the port is available, False otherwise.
-"""
 def check_port(port):
+    """Checks if a given port is available for use.
+
+    Args:
+        port: The port number to check.
+
+    Returns: 
+        True if the port is available, False otherwise.
+    """
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
         if sock.connect_ex(('0.0.0.0', port)) == 0:
             return False
